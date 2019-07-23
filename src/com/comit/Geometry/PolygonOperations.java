@@ -1,4 +1,4 @@
-package com.comit;
+package com.comit.Geometry;
 
 public interface PolygonOperations {
     double calculateArea();

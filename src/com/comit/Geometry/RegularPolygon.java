@@ -1,9 +1,9 @@
-package com.comit;
+package com.comit.Geometry;
 
 public class RegularPolygon implements Moveable, PolygonOperations {
-    private static final MAX_POINTS =100
+    private static final int MAX_POINTS =100;
     private Point[] points = new Point[RegularPolygon.MAX_POINTS];
-    private pointCount =0
+    private int pointCount =0;
 
     public RegularPolygon() {
 
@@ -11,19 +11,47 @@ public class RegularPolygon implements Moveable, PolygonOperations {
 
     public RegularPolygon(Point[] somePoints) {
         if (RegularPolygon.MAX_POINTS >= somePoints.length) {
-            for (int i = 0; i < somePoints.length; i++) {
-                this.points[i] = somePoints[i];
-                this.pointCount++;
+            if (somePoints.length > 2) {
+                double length = Point.getLength(somePoints[0],somePoints[1]);
+                int i;
+                boolean bad = false;
+                try {
+                    for ( i = 1; i < somePoints.length - 2; i++)
+                    {
+                        if (Point.getLength(somePoints[i], somePoints[i+1]) != length)
+                        {
+                            bad = true;
+                        }
+                    }
+                    if (Point.getLength(somePoints[somePoints.length - 1], somePoints[0]) != length)
+                    {
+                        bad = true;
+                    }
+                    if (bad)
+                    {
+                        throw new IrregularPolygonException("Not a regular polygon", new Throwable());
+                    }
+                } catch (IrregularPolygonException err)
+                {
+                    System.out.println(err.toString());
+                }
+                finally
+                {
+                    for (i = 0; i < somePoints.length; i++) {
+                        this.points[i] = somePoints[i];
+                        this.pointCount++;
+                    }
+                }
             }
         }
     }
 
     public void moveY(double amountMoved) {
-        moveAllPoints(0, amountMovedY);
+        moveAllPoints(0, amountMoved);
     }
 
     public void moveX(double amountMoved) {
-        moveAllPoints(amountMovedX, 0);
+        moveAllPoints(amountMoved, 0);
     }
 
     public void moveXY(double amountMovedX, double amountMovedY) {
@@ -41,8 +69,7 @@ public class RegularPolygon implements Moveable, PolygonOperations {
         if (this.pointCount >= 3) {
             double perimeter = this.calculatePerimeter();
             double apothem = this.calculateApothem();
-            double area = 0.5 * perimeter * apothem;
-            return area;
+            return 0.5 * perimeter * apothem;
         }
         return 0;
     }
@@ -52,7 +79,7 @@ public class RegularPolygon implements Moveable, PolygonOperations {
         double denominator = java.lang.Math.PI / this.pointCount;
         denominator = java.lang.Math.tan(denominator);
         denominator *= 2;
-        return (onLength / denominator);
+        return (oneLength / denominator);
     }
 
 
@@ -68,7 +95,7 @@ public class RegularPolygon implements Moveable, PolygonOperations {
 
         if (this.pointCount > 0) {
             if (this.pointCount <= PolygonShapes.values().length) {
-                PolygonShapes.values()[(this.pointCount - 1)].name();
+                return PolygonShapes.values()[(this.pointCount - 1)].name();
             } else {
                 return "Weird Shape";
             }

@@ -1,5 +1,8 @@
 package com.comit;
 
+import com.comit.Geometry.Point;
+import com.comit.Geometry.RegularPolygon;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -9,13 +12,13 @@ public class Main {
 
         for (int i = 0; i < 4; i++) {
             double x = (i < 2 ? 0 : sizeOfSquare);
-            double y = (i != 0 && i != 4 ? sizeOfSquare : 0);
+            double y = (i != 0 && i != 3 ? sizeOfSquare : 0);
             myPoints[i] = new Point(x, y);
         }
 
         ///Print Square points
         for (Point p : myPoints) {
-            System.out.println(p.getX() + " " + p.getY());
+            System.out.println(p.print());
         }
 
         //Move square points
@@ -25,7 +28,7 @@ public class Main {
 
         //Print again
         for (Point p : myPoints) {
-            System.out.println(p.getX() + " " + p.getY());
+            System.out.println(p.print());
         }
 
         //Make square from points and identify it

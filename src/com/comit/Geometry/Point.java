@@ -1,4 +1,4 @@
-package com.comit;
+package com.comit.Geometry;
 
 public class Point implements Moveable {
     private double x;
@@ -48,7 +48,11 @@ public class Point implements Moveable {
         double xSquared = xDiff * xDiff;
         double yDiff = point1.y - point2.y;
         double ySquared = yDiff * yDiff;
-        double length = java.lang.Math.sqrt(xSquared + ySquared);
-        return length;
+        return Math.sqrt(xSquared + ySquared);
+    }
+
+    public String print()
+    {
+        return("(" + this.getX() + "," + this.getY() + ")");
     }
 }
