@@ -7,12 +7,13 @@ import javax.swing.*;
 
 public class Plotter extends JPanel{
     private static com.comit.Geometry.Point[] points;
-    private static Polygon theirPolygon;
+    private static java.awt.Polygon theirPolygon;
+    private static java.awt.Point mousePt;
 
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
-        theirPolygon = new Polygon();
+        theirPolygon = new java.awt.Polygon();
         for (int i = 0; i < Plotter.points.length; i++)
         {
             Plotter.theirPolygon.addPoint( (int)Plotter.points[i].getX(), (int) Plotter.points[i].getY());
@@ -39,6 +40,34 @@ public class Plotter extends JPanel{
         }
 
         Plotter thisPlotter = new Plotter();
+
+        MouseAdapter ma = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                super.mouseClicked(me);
+                if (theirPolygon.contains(me.getPoint())) {
+                    System.out.println("HEY THATS ME");
+                }
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                mousePt = e.getPoint();
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                int dx = e.getX() - mousePt.x;
+                int dy = e.getY() - mousePt.y;
+                for (com.comit.Geometry.Point p : Plotter.points)
+                    p.moveXY(dx,dy);
+                thisPlotter.repaint();
+
+            }
+        };
+
+        thisPlotter.addMouseListener(ma);
         contentPane.add(thisPlotter);
         frame.setVisible(true);
 
@@ -46,11 +75,6 @@ public class Plotter extends JPanel{
     }
 
     public static void main(String[] args) {
-        com.comit.Geometry.Point[] myPoints = new com.comit.Geometry.Point[3];
-        myPoints[0] = new com.comit.Geometry.Point(100,1000);
-        myPoints[1] = new com.comit.Geometry.Point(500,500);
-        myPoints[2] = new com.comit.Geometry.Point(2,200);
-        Plotter.plotter(myPoints);
 
     }
 
